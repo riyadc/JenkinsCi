@@ -1,6 +1,10 @@
-def app
-
 pipeline {
+	environment { 
+        registry = "riyadchowdhury/jenkinsci" 
+        registryCredential = 'dockerhub' 
+        dockerImage = '' 
+    	}
+    
     agent any
 
     stages {
@@ -12,20 +16,18 @@ pipeline {
         
         stage('Docker build') {
             steps {
-                sh("""
-                cd JenkinsCi
-                app = docker build -t riyadchowdhury/jenkinsci:ci"$BUILD_NUMBER" .
-                docker images -a
-                """)
+                script { 
+			dockerImage = docker.build registry + ":$BUILD_NUMBER" 
+                }
             }
         }
 
 	stage('Push Image to registry') {
 	      steps{
 	        script{
-	          withDockerRegistry(credentialsId: 'dockerhub', url: 'https://registry.hub.docker.com') {
-	            app.push()
-	          }
+	          docker.withRegistry( '', registryCredential ) { 
+		   	dockerImage.push()
+                  }
 	        }
       	     }
 	}

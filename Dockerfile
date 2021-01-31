@@ -2,11 +2,11 @@
 
 WORKDIR /source
 
-COPY JenkinsCi.csproj .
+COPY JenkinsCi/JenkinsCi.csproj .
 
 RUN dotnet restore JenkinsCi.csproj
 
-COPY JenkinsCi.Test/JenkinsCi.Test.csproj ./tests/
+COPY JenkinsCi/JenkinsCi.Test/JenkinsCi.Test.csproj ./tests/
 
 RUN dotnet restore tests/JenkinsCi.Test.csproj
 
