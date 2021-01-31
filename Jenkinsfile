@@ -1,7 +1,8 @@
 pipeline {
 	environment { 
-        registry = "riyadchowdhury/jenkinsci" 
-        registryCredential = 'dockerhub' 
+        registryRepo = "riyadchowdhury/jenkinsci" 
+        registryCredentialId = 'dockerhub'
+        registryUrl = "https://registry.hub.docker.com"
         dockerImage = '' 
     	}
     
@@ -17,7 +18,7 @@ pipeline {
         stage('Docker build') {
             steps {
                 script { 
-			dockerImage = docker.build registry + ":$BUILD_NUMBER" 
+			dockerImage = docker.build registryRepo + ":$BUILD_NUMBER" 
                 }
             }
         }
@@ -25,7 +26,7 @@ pipeline {
 	stage('Push Image to registry') {
 	      steps{
 	        script{
-	          docker.withRegistry( '', registryCredential ) { 
+	          docker.withRegistry( registryUrl, registryCredentialId ) { 
 		   	dockerImage.push()
                   }
 	        }
