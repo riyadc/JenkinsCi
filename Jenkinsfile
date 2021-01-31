@@ -12,14 +12,17 @@ pipeline {
             steps {
                 sh("""
                 cd JenkinsCi
-                docker build -t jenkins-pipeline .
-                docker tag jenkins-pipeline riyadchowdhury/jenkinsci:ci"$BUILD_NUMBER"
-                docker push riyadchowdhury/jenkinsci:ci"$BUILD_NUMBER"
+                docker build -t riyadchowdhury/jenkinsci:ci"$BUILD_NUMBER" .
                 docker images -a
                 """)
             }
         }
 
+	stage('Docker push') {
+            withDockerRegistry([ credentialsId: "babu6junnu", url: "" ]) {
+	            bat "docker push riyadchowdhury/jenkinsci:ci"$BUILD_NUMBER""
+        }
+        }
 
 
 
