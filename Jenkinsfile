@@ -13,8 +13,8 @@ pipeline {
                 sh("""
                 cd JenkinsCi
                 docker build -t jenkins-pipeline .
-                docker tag jenkins-pipeline riyadchowdhury/jenkinsci:"$BUILD_NUMBER"
-                docker push riyadchowdhury/jenkinsci:"$BUILD_NUMBER"
+                docker tag jenkins-pipeline riyadchowdhury/jenkinsci:ci"$BUILD_NUMBER"
+                docker push riyadchowdhury/jenkinsci:ci"$BUILD_NUMBER"
                 docker images -a
                 """)
             }
