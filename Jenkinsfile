@@ -11,8 +11,10 @@ pipeline {
         stage('Docker build') {
             steps {
                 sh("""
-                docker images -a
+                cd JenkinsCi
                 docker build -t jenkins-pipeline .
+                docker tag jenkins-pipeline riyadchowdhury/jenkinsci:"$BUILD_NUMBER"
+                docker push riyadchowdhury/jenkinsci:"$BUILD_NUMBER"
                 docker images -a
                 """)
             }
