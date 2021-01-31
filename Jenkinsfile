@@ -1,3 +1,5 @@
+def app
+
 pipeline {
     agent any
 
@@ -12,17 +14,20 @@ pipeline {
             steps {
                 sh("""
                 cd JenkinsCi
-                docker build -t riyadchowdhury/jenkinsci:ci"$BUILD_NUMBER" .
+                app = docker build -t riyadchowdhury/jenkinsci:ci"$BUILD_NUMBER" .
                 docker images -a
                 """)
             }
         }
 
-	stage('Docker push') {
-            withDockerRegistry([ credentialsId: "babu6junnu", url: "" ]) {
-	            bat "docker push riyadchowdhury/jenkinsci:ci"$BUILD_NUMBER""
-        }
-        }
+	stage('Push Image to registry') {
+	      steps{
+	        script{
+	          withDockerRegistry(credentialsId: 'dockerhub', url: 'https://registry.hub.docker.com') {
+	            app.push()
+	          }
+	        }
+      }
 
 
 
