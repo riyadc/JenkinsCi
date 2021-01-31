@@ -3,6 +3,6 @@ services:
   web:
     build:
         context: .
-    image: jenkins-pipeline
+    image: jenkinsci
     ports:
       - "8090:80"
